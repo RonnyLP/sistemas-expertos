@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 # Virtual environment
-venv/
+.venv/
 .env/
 
 # Django
@@ -31,10 +31,10 @@ Thumbs.db
 *.sql
 
 # TensorFlow / ML
-*.h5
-*.keras
-*.pkl
-*.joblib
+# *.h5
+# *.keras
+# *.pkl
+# *.joblib
 
 # Prolog generated files
 *.out
@@ -58,3 +58,6 @@ node_modules/
 
 # Secrets
 secrets.json
+
+# Mise
+mise.toml

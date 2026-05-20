@@ -1,0 +1,35 @@
+# Auto detect text files
+* text=auto
+
+# Python
+*.py text eol=lf
+
+# HTML/CSS/JS
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+
+# Shell scripts
+*.sh text eol=lf
+
+# Windows scripts
+*.bat text eol=crlf
+
+# Prolog
+*.pl text eol=lf
+
+# SQL
+*.sql text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+
+# ML models
+*.h5 binary
+*.keras binary
+*.pkl binary
+*.joblib binary

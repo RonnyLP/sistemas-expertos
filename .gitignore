@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+
+# Django
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# Environment variables
+.env
+.env.*
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# PostgreSQL dumps
+*.sql
+
+# TensorFlow / ML
+*.h5
+*.keras
+*.pkl
+*.joblib
+
+# Prolog generated files
+*.out
+*.tmp
+
+# Migrations cache
+**/__pycache__/
+
+# Coverage
+.coverage
+htmlcov/
+
+# Testing
+.pytest_cache/
+
+# Node (si luego usas frontend)
+node_modules/
+
+# Docker
+*.pid
+
+# Secrets
+secrets.json

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction</title>
+</head>
+<body>
+
+<h1>Airplane Survival Prediction</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">
+        Predict
+    </button>
+</form>
+
+{% if result %}
+    <h2>{{ result }}</h2>
+{% endif %}
+
+</body>
+</html>

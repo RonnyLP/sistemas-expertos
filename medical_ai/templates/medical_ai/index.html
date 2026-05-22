@@ -1,91 +1,93 @@
-{% extends "medical_ai/base.html" %}
+{% extends "base.html" %}
 
 {% block title %}Insuficiencia Cardíaca — Inicio{% endblock %}
 
 {% block content %}
-<div class="row g-4">
+<div class="mb-6">
+  <h2 class="text-2xl font-bold text-slate-800">Insuficiencia Cardíaca</h2>
+  <p class="text-slate-500 text-sm mt-1">
+    Sistema experto basado en los Criterios de Framingham.
+    Motor de inferencia: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono">SWI-Prolog</code>
+  </p>
+</div>
 
-  <!-- Encabezado -->
-  <div class="col-12">
-    <div class="card border-danger shadow-sm">
-      <div class="card-body">
-        <h1 class="card-title text-danger fw-bold">Insuficiencia Cardíaca</h1>
-        <p class="card-text lead">
-          La <strong>insuficiencia cardíaca (IC)</strong> es un síndrome clínico en el que el corazón no puede
-          bombear suficiente sangre para satisfacer las demandas metabólicas del organismo, o solo puede hacerlo
-          a presiones de llenado elevadas. Se caracteriza por síntomas como disnea, fatiga y retención de líquidos.
-        </p>
-        <p class="card-text">
-          Este sistema experto aplica los <strong>Criterios de Framingham</strong> para apoyar el diagnóstico de IC,
-          implementando la lógica de inferencia en <strong>SWI-Prolog</strong>.
-        </p>
-        <div class="d-flex gap-2 mt-3">
-          <a href="{% url 'medical_tree' %}" class="btn btn-outline-danger">Ver Árbol de Decisión</a>
-          <a href="{% url 'medical_diagnosis' %}" class="btn btn-danger">Iniciar Diagnóstico</a>
-        </div>
-      </div>
+<!-- Descripción -->
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-6">
+  <p class="text-slate-600 leading-relaxed">
+    La <strong>insuficiencia cardíaca (IC)</strong> es un síndrome clínico en el que el corazón no puede bombear
+    suficiente sangre para satisfacer las demandas metabólicas del organismo, o solo puede hacerlo a presiones
+    de llenado elevadas. Se manifiesta con disnea, fatiga y retención de líquidos.
+    Este módulo aplica los <strong>Criterios de Framingham</strong> para apoyar el diagnóstico clínico.
+  </p>
+  <div class="flex gap-3 mt-5">
+    <a href="{% url 'medical_tree' %}"
+       class="px-4 py-2 rounded-lg border border-rose-300 text-rose-700 text-sm font-medium
+              hover:bg-rose-50 transition-colors">
+      Ver Árbol de Decisión →
+    </a>
+    <a href="{% url 'medical_diagnosis' %}"
+       class="px-4 py-2 rounded-lg bg-rose-600 text-white text-sm font-medium
+              hover:bg-rose-700 transition-colors">
+      Iniciar Diagnóstico →
+    </a>
+  </div>
+</div>
+
+<!-- Criterios -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <div class="bg-rose-600 px-5 py-3">
+      <h3 class="text-sm font-semibold text-white uppercase tracking-wide">Criterios Mayores</h3>
+    </div>
+    <ul class="divide-y divide-slate-100">
+      {% for item in mayor_list %}
+      <li class="px-5 py-2.5 text-sm text-slate-700 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-rose-400 flex-shrink-0"></span>{{ item }}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <div class="bg-amber-500 px-5 py-3">
+      <h3 class="text-sm font-semibold text-white uppercase tracking-wide">Criterios Menores</h3>
+    </div>
+    <ul class="divide-y divide-slate-100">
+      {% for item in menor_list %}
+      <li class="px-5 py-2.5 text-sm text-slate-700 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>{{ item }}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+</div>
+
+<!-- Regla + Referencia -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+    <h4 class="text-sm font-semibold text-slate-700 mb-3">Regla Diagnóstica (Tabla 6)</h4>
+    <div class="flex flex-wrap gap-2 items-center">
+      <span class="px-3 py-1.5 rounded-full bg-rose-100 text-rose-700 text-xs font-semibold">
+        ≥ 2 criterios MAYORES
+      </span>
+      <span class="text-slate-400 text-xs">ó</span>
+      <span class="px-3 py-1.5 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold">
+        1 MAYOR + 2 MENORES
+      </span>
     </div>
   </div>
 
-  <!-- Criterios -->
-  <div class="col-md-6">
-    <div class="card h-100 shadow-sm">
-      <div class="card-header bg-danger text-white fw-semibold">Criterios Mayores</div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">Edema pulmonar agudo</li>
-        <li class="list-group-item">Cardiomegalia (radiografía de tórax)</li>
-        <li class="list-group-item">Reflujo hepatoyugular</li>
-        <li class="list-group-item">Distensión de venas del cuello</li>
-        <li class="list-group-item">Disnea paroxística nocturna u ortopnea</li>
-        <li class="list-group-item">Rales (crepitantes)</li>
-        <li class="list-group-item">Galope por tercer ruido cardíaco</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="col-md-6">
-    <div class="card h-100 shadow-sm">
-      <div class="card-header bg-warning text-dark fw-semibold">Criterios Menores</div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">Edema de tobillos</li>
-        <li class="list-group-item">Disnea de esfuerzo</li>
-        <li class="list-group-item">Hepatomegalia</li>
-        <li class="list-group-item">Tos nocturna</li>
-        <li class="list-group-item">Derrame pleural</li>
-        <li class="list-group-item">Taquicardia (&gt; 120 lpm)</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Regla diagnóstica -->
-  <div class="col-12">
-    <div class="card border-secondary shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">Regla Diagnóstica (Tabla 6)</h5>
-        <p class="card-text mb-1">
-          <span class="badge bg-danger">IC = 2 criterios MAYORES</span>
-          &nbsp;&nbsp;ó&nbsp;&nbsp;
-          <span class="badge bg-warning text-dark">1 MAYOR + 2 MENORES</span>
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Referencia bibliográfica -->
-  <div class="col-12">
-    <div class="card bg-light border-0 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">Referencia Bibliográfica</h5>
-        <blockquote class="blockquote mb-0 fs-6">
-          <p>
-            McKee, P. A., Castelli, W. P., McNamara, P. M., &amp; Kannel, W. B. (1971).
-            <em>The natural history of congestive heart failure: the Framingham study.</em>
-            <strong>New England Journal of Medicine</strong>, 285(26), 1441–1446.
-          </p>
-          <footer class="blockquote-footer">Estudio de cohorte de Framingham, Massachusetts, EE. UU.</footer>
-        </blockquote>
-      </div>
-    </div>
+  <div class="bg-slate-50 rounded-2xl border border-slate-200 p-5">
+    <h4 class="text-sm font-semibold text-slate-700 mb-2">Referencia Bibliográfica</h4>
+    <p class="text-xs text-slate-600 leading-relaxed">
+      McKee, P. A., Castelli, W. P., McNamara, P. M., &amp; Kannel, W. B. (1971).
+      <em>The natural history of congestive heart failure: the Framingham study.</em>
+      <strong>N Engl J Med</strong>, 285(26), 1441–1446.
+    </p>
+    <p class="text-xs text-slate-400 mt-1">Estudio de cohorte — Framingham, Massachusetts, EE. UU.</p>
   </div>
 
 </div>

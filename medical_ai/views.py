@@ -15,8 +15,31 @@ TIPO_IC_LABELS = {
 }
 
 
+_MAYOR_LIST = [
+    "Edema pulmonar agudo",
+    "Cardiomegalia (radiografía de tórax)",
+    "Reflujo hepatoyugular",
+    "Distensión de venas del cuello",
+    "Disnea paroxística nocturna u ortopnea",
+    "Rales (crepitantes)",
+    "Galope por tercer ruido cardíaco",
+]
+
+_MENOR_LIST = [
+    "Edema de tobillos",
+    "Disnea de esfuerzo",
+    "Hepatomegalia",
+    "Tos nocturna",
+    "Derrame pleural",
+    "Taquicardia (> 120 lpm)",
+]
+
+
 def index(request):
-    return render(request, "medical_ai/index.html")
+    return render(request, "medical_ai/index.html", {
+        "mayor_list": _MAYOR_LIST,
+        "menor_list": _MENOR_LIST,
+    })
 
 
 def decision_tree(request):

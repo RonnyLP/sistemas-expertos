@@ -16,17 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("", RedirectView.as_view(url="/accidentes/", permanent=False)),
 
-    path(
-        "accidentes/",
-        include("accidents_ai.urls")
-    ),
+    path("admin/", admin.site.urls),
 
-    path(
-        "medical/",
-        include("medical_ai.urls")
-    ),
+    path("accidentes/", include("accidents_ai.urls")),
+
+    path("insuficiencia-cardiaca/", include("medical_ai.urls")),
 ]

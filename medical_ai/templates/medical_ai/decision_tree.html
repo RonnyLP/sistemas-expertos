@@ -1,0 +1,167 @@
+{% extends "medical_ai/base.html" %}
+
+{% block title %}Árbol de Decisión — IC{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 fw-bold">Árbol de Decisión Diagnóstico</h2>
+<p class="text-muted mb-4">
+  Basado en la <strong>Figura 1</strong> del artículo de referencia.
+  La lógica está implementada en <code>heart_failure.pl</code> (SWI-Prolog).
+</p>
+
+<style>
+  .tree { font-family: monospace; font-size: .92rem; }
+  .node {
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 10px 18px;
+    background: #fff;
+    display: inline-block;
+    text-align: center;
+    min-width: 220px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  }
+  .node-start  { border-color: #0d6efd; background: #e7f1ff; }
+  .node-eval   { border-color: #6c757d; background: #f8f9fa; }
+  .node-ok     { border-color: #198754; background: #d1e7dd; color: #0a3622; }
+  .node-warn   { border-color: #ffc107; background: #fff3cd; color: #664d03; }
+  .node-danger { border-color: #dc3545; background: #f8d7da; color: #58151c; }
+  .node-info   { border-color: #0dcaf0; background: #cff4fc; }
+  .arrow { text-align: center; color: #6c757d; font-size: 1.4rem; line-height: 1.2; margin: 2px 0; }
+  .branch-row { display: flex; justify-content: center; gap: 60px; align-items: flex-start; }
+  .branch-col { display: flex; flex-direction: column; align-items: center; }
+  .label-si   { color: #198754; font-weight: 600; font-size: .85rem; }
+  .label-no   { color: #dc3545; font-weight: 600; font-size: .85rem; }
+  .label-lt   { color: #0d6efd; font-weight: 600; font-size: .85rem; }
+  .label-gte  { color: #6f42c1; font-weight: 600; font-size: .85rem; }
+</style>
+
+<div class="card shadow-sm p-4">
+<div class="tree d-flex flex-column align-items-center gap-0">
+
+  <!-- Inicio -->
+  <div class="node node-start">
+    <strong>INICIO</strong><br>
+    <small>Paciente con disnea, fatiga, edema periférico, rales</small>
+  </div>
+  <div class="arrow">&#8595;</div>
+
+  <!-- Evaluación inicial -->
+  <div class="node node-eval" style="min-width:300px; text-align:left">
+    <strong>Evaluación inicial (Figura 1)</strong><br>
+    <small>
+      &bull; Historia clínica<br>
+      &bull; Examen físico<br>
+      &bull; Laboratorio + BNP<br>
+      &bull; Radiografía de tórax<br>
+      &bull; Electrocardiograma
+    </small>
+  </div>
+  <div class="arrow">&#8595;</div>
+
+  <!-- Framingham -->
+  <div class="node" style="border-color:#0d6efd; background:#e7f1ff">
+    <strong>Aplicar Criterios de Framingham</strong><br>
+    <small>2 mayores &nbsp;ó&nbsp; 1 mayor + 2 menores</small>
+  </div>
+  <div class="arrow">&#8595;</div>
+
+  <!-- Rama SÍ / NO -->
+  <div class="branch-row">
+
+    <!-- Rama SÍ -->
+    <div class="branch-col">
+      <span class="label-si">SÍ &#8595;</span>
+      <div class="node node-danger mt-1">
+        <strong>IC SOSPECHADA</strong>
+      </div>
+    </div>
+
+    <!-- Rama NO -->
+    <div class="branch-col">
+      <span class="label-no">NO &#8595;</span>
+      <div class="node node-eval mt-1">¿BNP normal?</div>
+      <div class="arrow">&#8595;</div>
+      <div class="branch-row" style="gap:30px">
+        <div class="branch-col">
+          <span class="label-si">SÍ &#8595;</span>
+          <div class="node node-ok mt-1" style="min-width:160px">
+            <strong>IC DESCARTADA</strong><br><small>(Sistólica)</small>
+          </div>
+        </div>
+        <div class="branch-col">
+          <span class="label-no">NO &#8595;</span>
+          <div class="node node-warn mt-1" style="min-width:160px">
+            <strong>Sospecha</strong><br><small>IC Diastólica</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="arrow mt-2">&#8595; (ambas ramas convergen)</div>
+
+  <!-- Ecocardiografía -->
+  <div class="node node-info">
+    <strong>ECOCARDIOGRAFÍA</strong><br>
+    <small>FEVI = Fracción de Eyección del Ventrículo Izquierdo</small>
+  </div>
+  <div class="arrow">&#8595;</div>
+
+  <!-- Rama FEVI -->
+  <div class="branch-row">
+    <div class="branch-col">
+      <span class="label-lt">FEVI &lt; 50 % &#8595;</span>
+      <div class="node node-danger mt-1" style="min-width:170px">
+        <strong>IC Sistólica</strong><br>
+        <small>Tratar IC sistólica</small>
+      </div>
+    </div>
+    <div class="branch-col">
+      <span class="label-gte">FEVI &#8805; 50 % &#8595;</span>
+      <div class="node node-warn mt-1" style="min-width:170px">
+        <strong>IC Diastólica</strong><br>
+        <small>Tratar IC diastólica</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow mt-2">&#8595;</div>
+
+  <!-- Angina -->
+  <div class="node" style="border-color:#6f42c1; background:#f3e8ff">
+    <strong>¿Angina o dolor torácico presente?</strong>
+  </div>
+  <div class="arrow">&#8595;</div>
+
+  <div class="branch-row">
+    <div class="branch-col">
+      <span class="label-si">SÍ &#8595;</span>
+      <div class="node mt-1" style="border-color:#6f42c1; background:#f3e8ff; min-width:160px">
+        <strong>Coronariografía</strong><br><small>recomendada</small>
+      </div>
+    </div>
+    <div class="branch-col">
+      <span class="label-no">NO &#8595;</span>
+      <div class="node node-eval mt-1" style="min-width:160px">
+        <small>Evaluar EAC<br>si hay sospecha</small>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- Leyenda -->
+<div class="mt-4 d-flex flex-wrap gap-3">
+  <span class="badge bg-success fs-6 px-3 py-2">IC Descartada</span>
+  <span class="badge bg-warning text-dark fs-6 px-3 py-2">Sospecha IC Diastólica</span>
+  <span class="badge bg-danger fs-6 px-3 py-2">IC Sospechada</span>
+  <span class="badge" style="background:#6f42c1; font-size:1rem; padding:.4rem 1rem;">Coronariografía</span>
+</div>
+
+<div class="mt-4">
+  <a href="{% url 'medical_diagnosis' %}" class="btn btn-danger">Ir al Diagnóstico &rarr;</a>
+</div>
+{% endblock %}

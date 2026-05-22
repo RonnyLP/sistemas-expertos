@@ -24,4 +24,9 @@ urlpatterns = [
         "accidentes/",
         include("accidents_ai.urls")
     ),
+
+    path(
+        "medical/",
+        include("medical_ai.urls")
+    ),
 ]

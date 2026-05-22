@@ -1,0 +1,92 @@
+{% extends "medical_ai/base.html" %}
+
+{% block title %}Insuficiencia Cardíaca — Inicio{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+
+  <!-- Encabezado -->
+  <div class="col-12">
+    <div class="card border-danger shadow-sm">
+      <div class="card-body">
+        <h1 class="card-title text-danger fw-bold">Insuficiencia Cardíaca</h1>
+        <p class="card-text lead">
+          La <strong>insuficiencia cardíaca (IC)</strong> es un síndrome clínico en el que el corazón no puede
+          bombear suficiente sangre para satisfacer las demandas metabólicas del organismo, o solo puede hacerlo
+          a presiones de llenado elevadas. Se caracteriza por síntomas como disnea, fatiga y retención de líquidos.
+        </p>
+        <p class="card-text">
+          Este sistema experto aplica los <strong>Criterios de Framingham</strong> para apoyar el diagnóstico de IC,
+          implementando la lógica de inferencia en <strong>SWI-Prolog</strong>.
+        </p>
+        <div class="d-flex gap-2 mt-3">
+          <a href="{% url 'medical_tree' %}" class="btn btn-outline-danger">Ver Árbol de Decisión</a>
+          <a href="{% url 'medical_diagnosis' %}" class="btn btn-danger">Iniciar Diagnóstico</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Criterios -->
+  <div class="col-md-6">
+    <div class="card h-100 shadow-sm">
+      <div class="card-header bg-danger text-white fw-semibold">Criterios Mayores</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Edema pulmonar agudo</li>
+        <li class="list-group-item">Cardiomegalia (radiografía de tórax)</li>
+        <li class="list-group-item">Reflujo hepatoyugular</li>
+        <li class="list-group-item">Distensión de venas del cuello</li>
+        <li class="list-group-item">Disnea paroxística nocturna u ortopnea</li>
+        <li class="list-group-item">Rales (crepitantes)</li>
+        <li class="list-group-item">Galope por tercer ruido cardíaco</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card h-100 shadow-sm">
+      <div class="card-header bg-warning text-dark fw-semibold">Criterios Menores</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Edema de tobillos</li>
+        <li class="list-group-item">Disnea de esfuerzo</li>
+        <li class="list-group-item">Hepatomegalia</li>
+        <li class="list-group-item">Tos nocturna</li>
+        <li class="list-group-item">Derrame pleural</li>
+        <li class="list-group-item">Taquicardia (&gt; 120 lpm)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Regla diagnóstica -->
+  <div class="col-12">
+    <div class="card border-secondary shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Regla Diagnóstica (Tabla 6)</h5>
+        <p class="card-text mb-1">
+          <span class="badge bg-danger">IC = 2 criterios MAYORES</span>
+          &nbsp;&nbsp;ó&nbsp;&nbsp;
+          <span class="badge bg-warning text-dark">1 MAYOR + 2 MENORES</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Referencia bibliográfica -->
+  <div class="col-12">
+    <div class="card bg-light border-0 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Referencia Bibliográfica</h5>
+        <blockquote class="blockquote mb-0 fs-6">
+          <p>
+            McKee, P. A., Castelli, W. P., McNamara, P. M., &amp; Kannel, W. B. (1971).
+            <em>The natural history of congestive heart failure: the Framingham study.</em>
+            <strong>New England Journal of Medicine</strong>, 285(26), 1441–1446.
+          </p>
+          <footer class="blockquote-footer">Estudio de cohorte de Framingham, Massachusetts, EE. UU.</footer>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

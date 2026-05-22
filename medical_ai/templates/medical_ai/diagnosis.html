@@ -1,0 +1,158 @@
+{% extends "medical_ai/base.html" %}
+
+{% block title %}Diagnóstico — IC{% endblock %}
+
+{% block content %}
+<h2 class="mb-1 fw-bold">Formulario de Diagnóstico</h2>
+<p class="text-muted mb-4">
+  Marque los síntomas presentes. El motor de inferencia <strong>SWI-Prolog</strong> aplicará
+  los Criterios de Framingham y recorrerá el árbol de decisión.
+</p>
+
+<form method="post">
+  {% csrf_token %}
+
+  <div class="row g-4">
+
+    <!-- Criterios Mayores -->
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-danger text-white fw-semibold">
+          Criterios Mayores
+        </div>
+        <div class="card-body">
+          {% for field in form %}
+            {% if field.name in "edema_pulmonar_agudo,cardiomegalia,reflujo_hepatoyugular,distension_venas_cuello,disnea_paroxistica_nocturna,rales,galope_tercer_ruido" %}
+            <div class="form-check mb-2">
+              {{ field }}
+              <label class="form-check-label" for="{{ field.id_for_label }}">
+                {{ field.label }}
+              </label>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Criterios Menores -->
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-warning text-dark fw-semibold">
+          Criterios Menores
+        </div>
+        <div class="card-body">
+          {% for field in form %}
+            {% if field.name in "edema_tobillos,disnea_esfuerzo,hepatomegalia,tos_nocturna,derrame_pleural,taquicardia" %}
+            <div class="form-check mb-2">
+              {{ field }}
+              <label class="form-check-label" for="{{ field.id_for_label }}">
+                {{ field.label }}
+              </label>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Datos adicionales -->
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white fw-semibold">
+          Datos Adicionales (Árbol de Decisión)
+        </div>
+        <div class="card-body row">
+          {% for field in form %}
+            {% if field.name in "bnp_elevado,fevi_menor_50,angina" %}
+            <div class="col-md-4">
+              <div class="form-check mb-2">
+                {{ field }}
+                <label class="form-check-label" for="{{ field.id_for_label }}">
+                  {{ field.label }}
+                </label>
+              </div>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <button type="submit" class="btn btn-danger btn-lg px-5">
+        Diagnosticar
+      </button>
+    </div>
+
+  </div><!-- /row -->
+</form>
+
+{% if result %}
+<hr class="my-5">
+<h3 class="fw-bold mb-4">Resultado del Diagnóstico</h3>
+
+<div class="row g-3">
+
+  <!-- Diagnóstico principal -->
+  <div class="col-12">
+    <div class="alert alert-{{ result.badge_class }} d-flex align-items-center gap-3 shadow-sm" role="alert">
+      <span style="font-size:2rem">
+        {% if result.badge_class == "danger" %}&#10060;
+        {% elif result.badge_class == "warning" %}&#9888;
+        {% else %}&#9989;{% endif %}
+      </span>
+      <div>
+        <h4 class="alert-heading mb-1">{{ result.diagnostico_label }}</h4>
+        <small>
+          Criterios mayores presentes: <strong>{{ result.mayores_count }}</strong> &nbsp;|&nbsp;
+          Criterios menores presentes: <strong>{{ result.menores_count }}</strong>
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tipo de IC -->
+  {% if result.tipo_ic_label %}
+  <div class="col-md-6">
+    <div class="card border-primary shadow-sm">
+      <div class="card-body">
+        <h6 class="card-subtitle text-muted mb-1">Tipo de IC (FEVI)</h6>
+        <p class="card-text fw-semibold fs-5 mb-0 text-primary">{{ result.tipo_ic_label }}</p>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Coronariografía -->
+  <div class="col-md-6">
+    <div class="card {% if result.coronariografia %}border-purple{% else %}border-secondary{% endif %} shadow-sm">
+      <div class="card-body">
+        <h6 class="card-subtitle text-muted mb-1">Coronariografía</h6>
+        {% if result.coronariografia %}
+          <p class="card-text fw-semibold fs-5 mb-0" style="color:#6f42c1">
+            &#128269; Recomendada (angina presente)
+          </p>
+        {% else %}
+          <p class="card-text text-secondary mb-0">No indicada de rutina</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Motor Prolog -->
+  <div class="col-12">
+    <div class="card bg-light border-0 shadow-sm">
+      <div class="card-body">
+        <small class="text-muted">
+          Inferencia ejecutada por <strong>SWI-Prolog</strong> &mdash;
+          KB: <code>medical_ai/kb/heart_failure.pl</code>
+        </small>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endif %}
+
+{% endblock %}

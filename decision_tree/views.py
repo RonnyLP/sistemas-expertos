@@ -1,3 +1,6 @@
+from pathlib import Path
+
+from django.http import FileResponse, Http404
 from django.shortcuts import render
 
 from .forms import DiabetesForm
@@ -8,6 +11,8 @@ _RESULT_MAP = {
     "con_complicacion": ("Con Complicación", "amber"),
     "otro_trastorno": ("Otro Trastorno", "slate"),
 }
+
+_TREE_PNG = Path(__file__).resolve().parent / "ml" / "tree.png"
 
 
 def predict_view(request):
@@ -37,6 +42,12 @@ def predict_view(request):
 
     return render(
         request,
-        "accidents_ai/form.html",
+        "decision_tree/form.html",
         {"form": form, "result": result},
     )
+
+
+def tree_image(request):
+    if not _TREE_PNG.exists():
+        raise Http404("Imagen del árbol no encontrada. Ejecute train_model.py primero.")
+    return FileResponse(_TREE_PNG.open("rb"), content_type="image/png")

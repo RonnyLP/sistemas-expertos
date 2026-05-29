@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'accounts',
     'medical_ai',
     'accidents_ai',
+    'decision_tree',
     'core',
 ]
 

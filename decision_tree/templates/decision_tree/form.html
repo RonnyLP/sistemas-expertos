@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Red Neuronal — Diabetes{% endblock %}
+{% block title %}Árbol de Decisión — Diabetes{% endblock %}
 
 {% block content %}
 <div class="mb-6">
   <h2 class="text-2xl font-bold text-slate-800">Predicción de Diabetes</h2>
   <p class="text-slate-500 text-sm mt-1">
-    Red neuronal entrenada con registros clínicos de diabetes 2020–2024 (EsSalud).
+    Árbol de decisión (criterio entropía, profundidad 5) entrenado con registros clínicos de diabetes 2020–2024 (EsSalud).
   </p>
 </div>
 
@@ -47,7 +47,7 @@
       </div>
 
       <button type="submit"
-              class="w-full mt-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold
+              class="w-full mt-2 bg-green-600 hover:bg-green-700 text-white font-semibold
                      py-2.5 rounded-lg transition-colors text-sm">
         Predecir
       </button>
@@ -84,11 +84,27 @@
     </div>
     {% else %}
     <div class="w-full bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl p-8 text-center text-slate-400">
-      <p class="text-4xl mb-3">🩺</p>
+      <p class="text-4xl mb-3">🌿</p>
       <p class="text-sm">Complete el formulario y pulse <strong>Predecir</strong> para ver el resultado.</p>
     </div>
     {% endif %}
   </div>
 
 </div>
+
+<!-- Visualización del árbol -->
+<div class="mt-10">
+  <h3 class="text-lg font-semibold text-slate-700 mb-3">Estructura del Árbol</h3>
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 overflow-x-auto">
+    <img src="{% url 'dt_tree_image' %}"
+         alt="Árbol de decisión"
+         class="max-w-none"
+         style="min-width: 800px;">
+  </div>
+  <p class="text-xs text-slate-400 mt-2">
+    Árbol entrenado con profundidad máxima 5. Nodos coloreados por clase predominante.
+    Clases: <strong>con_complicacion</strong> · <strong>otro_trastorno</strong> · <strong>sin_complicacion</strong>.
+  </p>
+</div>
+
 {% endblock %}

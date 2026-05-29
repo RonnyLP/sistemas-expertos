@@ -30,13 +30,22 @@
 
     <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
 
-      <!-- Modelo Neuronal -->
+      <!-- Red Neuronal -->
       <a href="{% url 'predict' %}"
          class="flex items-center gap-2.5 px-3 py-2 rounded-lg transition-colors
                 {% if request.path == '/accidentes/' %}bg-indigo-600 text-white font-medium
                 {% else %}text-slate-300 hover:bg-slate-700 hover:text-white{% endif %}">
-        <span class="text-base leading-none">✈</span>
-        <span>Modelo Neuronal</span>
+        <span class="text-base leading-none">🩺</span>
+        <span>Red Neuronal</span>
+      </a>
+
+      <!-- Árbol de Decisión -->
+      <a href="{% url 'dt_predict' %}"
+         class="flex items-center gap-2.5 px-3 py-2 rounded-lg transition-colors
+                {% if request.path == '/arbol-de-decision/' %}bg-green-600 text-white font-medium
+                {% else %}text-slate-300 hover:bg-slate-700 hover:text-white{% endif %}">
+        <span class="text-base leading-none">🌿</span>
+        <span>Árbol de Decisión</span>
       </a>
 
       <!-- Insuficiencia Cardíaca (grupo) -->
@@ -49,7 +58,7 @@
           <span>Insuf. Cardíaca</span>
         </a>
 
-        <!-- Sub-links -->
+        <!-- Sub-links Prolog -->
         <div class="ml-5 mt-1 border-l border-slate-700 pl-3 space-y-1">
           <a href="{% url 'medical_tree' %}"
              class="flex items-center gap-2 px-2 py-1.5 rounded-md transition-colors text-xs
@@ -69,7 +78,7 @@
     </nav>
 
     <div class="px-5 py-4 border-t border-slate-700">
-      <p class="text-xs text-slate-500">Django · SWI-Prolog · TensorFlow</p>
+      <p class="text-xs text-slate-500">Django · TensorFlow · sklearn · SWI-Prolog</p>
     </div>
   </aside>
 
